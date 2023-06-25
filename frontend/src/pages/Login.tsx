@@ -69,7 +69,7 @@ function Login() {
               <FormControlLabel control={<Checkbox />} label="Remember me" />
             </FormGroup>
           </Box>
-          <Link to={"/404"} style={{width : "100%"}} >
+          <Link to={"/studentlist"} style={{width : "100%"}} >
             <Button variant="contained" fullWidth>
               Sign in
             </Button>
@@ -88,7 +88,7 @@ function Login() {
             color="text.secondary"
           >
             Copyright ©{" "}
-            <MuiLink
+            {/* <MuiLink
               href="https://www.google.com"
               target="_blank"
               variant="inherit"
@@ -97,7 +97,8 @@ function Login() {
             >
               {" "}
               Click Here My Website{" "}
-            </MuiLink>{" "}
+            </MuiLink>{" "} */}
+            Pavaret Wisarut
             2023.
           </Typography>
         </Box>
