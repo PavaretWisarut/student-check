@@ -70,7 +70,8 @@ export default function MenuAppBar() {
           </IconButton>
           <PeopleIcon />
           <Muilink
-            href="/studentlist"
+           component={Link}
+            to="/studentlist"
             underline="none"
             variant="h6"
             sx={{ flexGrow: 1, ml: 2, color: "white" }}
@@ -178,12 +179,16 @@ export default function MenuAppBar() {
             <ListItemText primary="Calculate Miss" />
           </ListItem>
           <Divider />
-          <ListItem button sx={{ mt: 2 }}>
+
+          <Muilink component={Link} to="/" sx={{ textDecoration: "none", color: "#000000DE" }}>
+          <ListItem button sx={{mt: 2}}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="Log out" />
           </ListItem>
+          </Muilink>
+          
         </List>
       </Drawer>
     </Box>

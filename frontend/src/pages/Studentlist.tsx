@@ -5,6 +5,8 @@ import {
   GridValueGetterParams,
   GridCellParams,
 } from "@mui/x-data-grid";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditIcon from "@mui/icons-material/Edit";
@@ -168,7 +170,6 @@ const columns: GridColDef[] = [
             sx={{
               backgroundColor: "#FF6962",
               ":hover": { backgroundColor: "red" },
-          
             }}
             startIcon={<DeleteIcon />}
           >
@@ -194,6 +195,9 @@ const rows = [
 ];
 
 function Studentlist() {
+  const theme = useTheme();
+  const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const gridWidth = isMobileOrTablet ? "100%" : "65%";
   return (
     <div>
       <Navbar />
@@ -229,7 +233,6 @@ function Studentlist() {
             size="small"
             sx={{
               width: "50%",
-
             }}
           />
 
@@ -259,9 +262,9 @@ function Studentlist() {
             Add
           </Button>
         </Box>
-        <Box
+        {/* <Box
           sx={{
-            width: "70%",
+            width: "100%",
             overflowX: "auto",
             height: 400,
             backgroundColor: "white",
@@ -270,19 +273,20 @@ function Studentlist() {
             mt: 6,
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
           }}
-        >
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            disableColumnSelector
-          />
-        </Box>
+        > */}
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10]}
+          disableColumnSelector
+          sx={{ width: gridWidth, overflowX: "auto" , mt: 4 }}
+        />
+        {/* </Box> */}
       </Box>
     </div>
   );
