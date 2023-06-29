@@ -5,6 +5,7 @@ import {
   GridValueGetterParams,
   GridCellParams,
 } from "@mui/x-data-grid";
+import "../App.css"
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Button, TextField, InputAdornment } from "@mui/material";

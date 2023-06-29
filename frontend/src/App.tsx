@@ -1,10 +1,25 @@
 import * as React from "react";
-import "./App.css";
+// import "./App.css";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { RouterProvider } from "react-router-dom";
-import routers from "./routes/routers"
+import routers from "./routes/routers";
+
+const theme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: 'Belanosima, sans-serif'
+    },
+  },
+});
 
 function App() {
-  return <RouterProvider router={routers}></RouterProvider>
+  return (
+    <>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={routers}></RouterProvider>
+      </ThemeProvider>
+    </>
+  );
 }
 
 export default App;
