@@ -104,6 +104,7 @@ export default function MenuAppBar() {
             >
               <Avatar alt="My profile" src={avatarthumbnail} />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -126,12 +127,13 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
               </Link>
               <Link
-                to="/profile"
+                to="/"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem>Log Out</MenuItem>
               </Link>
             </Menu>
+
           </div>
         </Toolbar>
       </AppBar>
