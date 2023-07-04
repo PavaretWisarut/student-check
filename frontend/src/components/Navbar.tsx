@@ -37,6 +37,20 @@ export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
+  const pageNav = [{
+    name : "Student",
+    path : "/studentlist",
+    icon : <FaceIcon />
+  },{
+    name : "Subject",
+    path : "/subject",
+    icon : <MenuBookIcon />
+  },{
+    name : "Calculate Miss",
+    path : "/calculatemiss",
+    icon : <HealingIcon />
+  },]
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -70,15 +84,13 @@ export default function MenuAppBar() {
           </IconButton>
           <PeopleIcon />
           <Muilink
-           component={Link}
+            component={Link}
             to="/studentlist"
             underline="none"
             variant="h6"
             sx={{ flexGrow: 1, ml: 2, color: "white" }}
           >
-            <Typography variant="body1" >
-              Student Checklist System
-            </Typography>
+            <Typography variant="body1">Student Checklist System</Typography>
           </Muilink>
 
           <div>
@@ -160,35 +172,37 @@ export default function MenuAppBar() {
             />
           </Box>
 
-          <ListItem button sx={{ mt: 2 }}>
-            <ListItemIcon>
-              <FaceIcon />
-            </ListItemIcon>
-            <ListItemText primary="Student" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <MenuBookIcon />
-            </ListItemIcon>
-            <ListItemText primary="Subject" />
-          </ListItem>
-          <ListItem button sx={{ mb: 2 }}>
-            <ListItemIcon>
-              <HealingIcon />
-            </ListItemIcon>
-            <ListItemText primary="Calculate Miss" />
-          </ListItem>
+          {pageNav.map((page)=>(
+               <Muilink
+               component={Link}
+               to={page.path}
+               underline="none"
+               variant="h6"
+               sx={{ color: "#000000DE" }}
+             >
+               <ListItem button sx={{ mt: 2 }}>
+                 <ListItemIcon>
+                   {page.icon}
+                 </ListItemIcon>
+                 <ListItemText primary={page.name} />
+               </ListItem>
+             </Muilink>
+          ))}
+
           <Divider />
 
-          <Muilink component={Link} to="/" sx={{ textDecoration: "none", color: "#000000DE" }}>
-          <ListItem button sx={{mt: 2}}>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Log out" />
-          </ListItem>
+          <Muilink
+            component={Link}
+            to="/"
+            sx={{ textDecoration: "none", color: "#000000DE" }}
+          >
+            <ListItem button sx={{ mt: 2 }}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </ListItem>
           </Muilink>
-          
         </List>
       </Drawer>
     </Box>

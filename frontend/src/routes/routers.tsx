@@ -4,6 +4,8 @@ import Login from "../pages/Login"
 import Notfound from "../pages/Notfound"
 import Studentlist from "../pages/Studentlist"
 import Profile from "../pages/Profile"
+import Subject from "../pages/Subject"
+import Calculatemiss from "../pages/Calculatemiss"
 
 const routers = createBrowserRouter([
     {
@@ -17,6 +19,14 @@ const routers = createBrowserRouter([
     {
         path: "/profile",
         element: <Profile />
+    },
+    {
+        path: "/subject",
+        element: <Subject />
+    },
+    {
+        path: "/calculatemiss",
+        element: <Calculatemiss />
     },
     {
         path: "*",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DataGrid,
   GridColDef,
@@ -14,10 +14,6 @@ import {
   TextField,
   InputAdornment,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditIcon from "@mui/icons-material/Edit";
@@ -205,20 +201,10 @@ const rows = [
   { id: 10, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
-function Studentlist() {
-  const [open, setOpen] = useState(false);
-
+function Calculatemiss() {
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "65%";
-
-  const handleOpenDrawer = () => {
-    setOpen(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpen(false);
-  };
   return (
     <div>
       <Navbar />
@@ -231,17 +217,16 @@ function Studentlist() {
           flexDirection: "column",
         }}
       >
-        <Typography gutterBottom variant="h4" sx={{ mt: 5 }}>
-          Student List
-        </Typography>
+        <Typography gutterBottom variant="h4" sx={{mt : 5}}>Calculate Student Miss</Typography>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            marginTop: 2,
+            marginTop : 2,
             justifyContent: "center",
             width: "100%",
+            // justifyContent: "space-between",
           }}
         >
           <TextField
@@ -276,7 +261,7 @@ function Studentlist() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleOpenDrawer}
+            // onClick={handleDelete}
             sx={{
               backgroundColor: "#F2C94C",
               ":hover": { backgroundColor: "#DFA003" },
@@ -286,7 +271,18 @@ function Studentlist() {
             Add
           </Button>
         </Box>
-
+        {/* <Box
+          sx={{
+            width: "100%",
+            overflowX: "auto",
+            height: 400,
+            backgroundColor: "white",
+            // height: "calc(100vh - 200px)",
+            borderRadius: 3,
+            mt: 6,
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+          }}
+        > */}
         <DataGrid
           rows={rows}
           columns={columns}
@@ -299,42 +295,10 @@ function Studentlist() {
           disableColumnSelector
           sx={{ width: gridWidth, overflowX: "auto", mt: 4 }}
         />
-
-
-        {/* Create A Modal to add student  */}
-        <Dialog open={open} onClose={handleCloseDrawer} PaperProps={{ style: { width: '500px', height: '400px' } }}>
-          <DialogTitle>Modal Title</DialogTitle>
-          <DialogContent>
-            <form >
-              <TextField
-                name="name"
-                label="Name"
-                // value={formData.name}
-                // onChange={handleInputChange}
-                fullWidth
-                sx={{marginTop : 2}}
-              />
-              <TextField
-                name="email"
-                label="Email"
-                // value={formData.email}
-                // onChange={handleInputChange}
-                fullWidth
-              />
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDrawer}>Cancel</Button>
-            <Button  color="primary">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-
+        {/* </Box> */}
       </Box>
     </div>
   );
 }
 
-export default Studentlist;
+export default Calculatemiss;
