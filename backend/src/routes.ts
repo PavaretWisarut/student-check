@@ -1,12 +1,10 @@
 import express, { Request, Response } from 'express';
-import testRouter from "./routers/testrouter"
+import studentsRouter from "./routers/studentsRouter"
+import subjectsRouter from "./routers/subjectsRouter"
 
 const router = express.Router()
 
-router.get('/', (req: Request, res: Response) => {
-    res.send('Hello, World! This is type script');
-});
-
-router.use('/api', testRouter)
+router.use('/api/student', studentsRouter)
+router.use('/api/subject', subjectsRouter)
 
 export default router

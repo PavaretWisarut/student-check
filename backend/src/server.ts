@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import cors from "cors"
-import { getTestpages } from "./controllers/testpage"
 import router from './routes';
 import dotenv from "dotenv"
 
