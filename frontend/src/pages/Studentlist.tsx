@@ -207,6 +207,13 @@ const rows = [
 
 function Studentlist() {
   const [open, setOpen] = useState(false);
+  const [openmodal, setOpenmodal] = useState(false);
+
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    age: 0,
+  });
 
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -219,6 +226,32 @@ function Studentlist() {
   const handleCloseDrawer = () => {
     setOpen(false);
   };
+
+  const handleOpenModal = () => {
+    setOpenmodal(true);
+  };
+
+  const handleCloseModal = () => {
+    setFormData({
+      firstname: "",
+      lastname: "",
+      age: 0,
+    });
+    setOpenmodal(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const Addstudent = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form Data:", formData);
+  };
+
   return (
     <div>
       <Navbar />
@@ -276,7 +309,7 @@ function Studentlist() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleOpenDrawer}
+            onClick={handleOpenModal}
             sx={{
               backgroundColor: "#F2C94C",
               ":hover": { backgroundColor: "#DFA003" },
@@ -287,6 +320,7 @@ function Studentlist() {
           </Button>
         </Box>
 
+        {/* Create A Table Data to add student  */}
         <DataGrid
           rows={rows}
           columns={columns}
@@ -297,41 +331,65 @@ function Studentlist() {
           }}
           pageSizeOptions={[5, 10]}
           disableColumnSelector
-          sx={{ width: gridWidth, overflowX: "auto", mt: 4 }}
+          sx={{ width: gridWidth, overflowX: "auto", mt: 4, fontSize: "1rem" }}
         />
 
+        {/* Create A Table Data to add student  */}
 
         {/* Create A Modal to add student  */}
-        <Dialog open={open} onClose={handleCloseDrawer} PaperProps={{ style: { width: '500px', height: '400px' } }}>
-          <DialogTitle>Modal Title</DialogTitle>
-          <DialogContent>
-            <form >
+        <Dialog
+          open={openmodal}
+          onClose={handleCloseModal}
+          PaperProps={{ style: { width: "500px", height: "380px" } }}
+        >
+          <DialogTitle
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 1,
+              fontSize: 20,
+            }}
+          >
+            Add Students
+          </DialogTitle>
+          <form onSubmit={Addstudent}>
+            <DialogContent>
               <TextField
-                name="name"
-                label="Name"
-                // value={formData.name}
-                // onChange={handleInputChange}
+                name="firstname"
+                label="Firstname"
+                value={formData.firstname}
+                onChange={handleChange}
                 fullWidth
-                sx={{marginTop : 2}}
+                sx={{ marginTop: 1 }}
               />
               <TextField
-                name="email"
-                label="Email"
-                // value={formData.email}
-                // onChange={handleInputChange}
+                name="lastname"
+                label="Lastname"
+                value={formData.lastname}
+                onChange={handleChange}
                 fullWidth
+                sx={{ marginTop: 2 }}
               />
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDrawer}>Cancel</Button>
-            <Button  color="primary">
-              Save
-            </Button>
-          </DialogActions>
+              <TextField
+                name="age"
+                label="Age"
+                type="number"
+                value={formData.age}
+                onChange={handleChange}
+                fullWidth
+                sx={{ marginTop: 2 }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal}>Cancel</Button>
+              <Button color="primary" type="submit">
+                Save
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
 
-
+        {/* Create A Modal to add student  */}
       </Box>
     </div>
   );

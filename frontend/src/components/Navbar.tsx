@@ -174,8 +174,8 @@ export default function MenuAppBar() {
             />
           </Box>
 
-          {pageNav.map((page)=>(
-               <Muilink
+          {pageNav.map((page , index)=>(
+               <Muilink key={index}
                component={Link}
                to={page.path}
                underline="none"
