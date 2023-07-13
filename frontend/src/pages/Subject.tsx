@@ -200,7 +200,7 @@ function Subject() {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "65%";
   return (
-    <div>
+    <React.Fragment>
       <Navbar />
       <Box
         sx={{
@@ -292,7 +292,7 @@ function Subject() {
         />
         {/* </Box> */}
       </Box>
-    </div>
+    </React.Fragment>
   );
 }
 

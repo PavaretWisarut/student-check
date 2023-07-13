@@ -206,7 +206,7 @@ function Calculatemiss() {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "65%";
   return (
-    <div>
+    <React.Fragment>
       <Navbar />
 
       <Box
@@ -297,7 +297,7 @@ function Calculatemiss() {
         />
         {/* </Box> */}
       </Box>
-    </div>
+    </React.Fragment>
   );
 }
 

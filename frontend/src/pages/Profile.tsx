@@ -4,16 +4,16 @@ import {
   Box,
   Button,
   TextField,
-  InputAdornment,
+  // InputAdornment,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  // Dialog,
+  // DialogTitle,
+  // DialogContent,
+  // DialogActions,
   Avatar,
 } from "@mui/material";
 import avatarthumbnail from "../assets/pictures/AvatarThumnail.jpg";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -23,7 +23,7 @@ function Profile() {
   // const Responsive = isMobileOrTablet ? "100%" : "65%";
 
   return (
-    <div>
+    <React.Fragment>
       <Navbar />
       {!isMobileOrTablet ? (
         <>
@@ -271,7 +271,7 @@ function Profile() {
           </Box>
         </>
       )}
-    </div>
+    </React.Fragment>
   );
 }
 

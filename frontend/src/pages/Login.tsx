@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 function Login() {
   return (
-    <div>
+    <React.Fragment>
       <Container maxWidth="xs">
         <Box
           sx={{
@@ -103,7 +103,7 @@ function Login() {
           </Typography>
         </Box>
       </Container>
-    </div>
+    </React.Fragment>
   );
 }
 

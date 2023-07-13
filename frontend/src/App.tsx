@@ -14,11 +14,11 @@ const theme = createTheme({
 
 function App() {
   return (
-    <>
+    <React.Fragment>
       <ThemeProvider theme={theme}>
         <RouterProvider router={routers}></RouterProvider>
       </ThemeProvider>
-    </>
+    </React.Fragment>
   );
 }
 

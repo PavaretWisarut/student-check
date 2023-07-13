@@ -206,7 +206,7 @@ const rows = [
 ];
 
 function Studentlist() {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [openmodal, setOpenmodal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -219,13 +219,13 @@ function Studentlist() {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "65%";
 
-  const handleOpenDrawer = () => {
-    setOpen(true);
-  };
+  // const handleOpenDrawer = () => {
+  //   setOpen(true);
+  // };
 
-  const handleCloseDrawer = () => {
-    setOpen(false);
-  };
+  // const handleCloseDrawer = () => {
+  //   setOpen(false);
+  // };
 
   const handleOpenModal = () => {
     setOpenmodal(true);
