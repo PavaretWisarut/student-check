@@ -27,8 +27,9 @@ export const updateStudent = async (req: Request, res: Response) => {
 
 export const deleteStudent = async (req: Request, res: Response) => {
     const { id } = req.params
-    const updateStudent = await DeleteStudent(id)
-    resultOK(req, res, updateStudent, "ลบข้อมูลนักเรียนสำเร็จ")
+    console.log(id);
+    const deleteStudent = await DeleteStudent(id)
+    resultOK(req, res, deleteStudent, "ลบข้อมูลนักเรียนสำเร็จ")
 }
 
 

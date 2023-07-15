@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2023 at 09:08 AM
+-- Generation Time: Jul 15, 2023 at 08:36 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,6 +46,7 @@ CREATE TABLE `student` (
   `id` varchar(50) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
   `age` int(10) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `create_by` varchar(20) DEFAULT NULL,
@@ -57,13 +58,12 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`id`, `firstname`, `lastname`, `age`, `create_date`, `create_by`, `update_date`, `update_by`) VALUES
-('28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef', 'pavaret2', 'wisarut', 23, '2023-07-09 13:33:44', '28fd5d42-3b2c-4ede-8', '2023-07-09 13:33:44', '28fd5d42-3b2c-4ede-8'),
-('5639eda6-4665-41d8-9c41-bd4e23cbbfb9', 'pavaret5', 'wisarut', 23, '2023-07-09 13:33:53', '5639eda6-4665-41d8-9', '2023-07-09 13:33:53', '5639eda6-4665-41d8-9'),
-('615da075-5569-4938-b615-a100e2e76462', 'pavaret', 'wisarut', 23, '2023-07-09 13:33:36', '615da075-5569-4938-b', '2023-07-09 13:33:36', '615da075-5569-4938-b'),
-('a6fd31c8-b593-484f-9989-332a461dfb7b', 'pavaret1', 'wisarut', 23, '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9', '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9'),
-('d2b12a0e-c180-45f3-a066-51c01063140c', 'pavaret3', 'wisarut', 23, '2023-07-09 13:33:47', 'd2b12a0e-c180-45f3-a', '2023-07-09 13:33:47', 'd2b12a0e-c180-45f3-a'),
-('f1867b9b-c9e1-41c3-a942-1ffdc9da868d', 'pavaret4', 'wisarut', 23, '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a', '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a');
+INSERT INTO `student` (`id`, `firstname`, `lastname`, `email`, `age`, `create_date`, `create_by`, `update_date`, `update_by`) VALUES
+('28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef', 'pavaretyu', 'turboza007', 'Prayuth.ChaOcha@gmail.com', 22, '2023-07-09 13:33:44', '28fd5d42-3b2c-4ede-8', '2023-07-15 20:54:48', '28fd5d42-3b2c-4ede-8'),
+('615da075-5569-4938-b615-a100e2e76462', 'pavaret', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:36', '615da075-5569-4938-b', '2023-07-09 13:33:36', '615da075-5569-4938-b'),
+('a6fd31c8-b593-484f-9989-332a461dfb7b', 'pavaret1', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9', '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9'),
+('b256eeb5-27ab-480c-8129-ca10f1d2fe7b', 'Phita', 'ChanoCHa', 'ChanoChaya@gmail.com', 40, '2023-07-16 01:34:36', 'b256eeb5-27ab-480c-8', '2023-07-16 01:34:36', 'b256eeb5-27ab-480c-8'),
+('f1867b9b-c9e1-41c3-a942-1ffdc9da868d', 'pavaret4', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a', '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a');
 
 -- --------------------------------------------------------
 

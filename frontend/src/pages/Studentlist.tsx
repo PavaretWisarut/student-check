@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -25,185 +25,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-
-const columns: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "ID",
-    width: 70,
-    filterable: false,
-    hideable: false,
-    sortable: false,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "firstName",
-    headerName: "First name",
-    width: 130,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "lastName",
-    headerName: "Last name",
-    width: 130,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "subject",
-    headerName: "Subject",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "view",
-    headerName: "View",
-    sortable: false,
-    width: 100,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-    renderCell: (params: GridCellParams) => {
-      const handleView = () => {
-        console.log("Edit", params.row.id);
-      };
-
-      return (
-        <div>
-          <Button
-            variant="contained"
-            onClick={handleView}
-            sx={{
-              backgroundColor: "#73C088",
-              ":hover": { backgroundColor: "#397D54" },
-            }}
-            startIcon={<VisibilityIcon />}
-          >
-            View
-          </Button>
-        </div>
-      );
-    },
-  },
-  {
-    field: "edit",
-    headerName: "Edit",
-    sortable: false,
-    width: 100,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-    renderCell: (params: GridCellParams) => {
-      const handleEdit = () => {
-        console.log("Edit", params.row.id);
-      };
-
-      return (
-        <div>
-          <Button
-            variant="contained"
-            onClick={handleEdit}
-            sx={{
-              backgroundColor: "#51C2D5",
-              ":hover": { backgroundColor: "D3E0EA" },
-            }}
-            startIcon={<EditIcon />}
-          >
-            Edit
-          </Button>
-        </div>
-      );
-    },
-  },
-  {
-    field: "delete",
-    headerName: "Delete",
-    sortable: false,
-    width: 100,
-    align: "center",
-    headerAlign: "center",
-    disableColumnMenu: true,
-    renderCell: (params: GridCellParams) => {
-      const handleDelete = () => {
-        // Handle delete action here using params.row.id
-        console.log("Delete", params.row.id);
-      };
-
-      return (
-        <div>
-          <Button
-            variant="contained"
-            onClick={handleDelete}
-            sx={{
-              backgroundColor: "#FF6962",
-              ":hover": { backgroundColor: "red" },
-            }}
-            startIcon={<DeleteIcon />}
-          >
-            Delete
-          </Button>
-        </div>
-      );
-    },
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 10, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+import instance from "../api/axiosinstance";
+import { StudentsList } from "../ts/StudentList-interface";
 
 function Studentlist() {
   // const [open, setOpen] = useState(false);
@@ -212,20 +35,71 @@ function Studentlist() {
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
+    email: "",
     age: 0,
   });
 
+  const [students, setStudents] = useState([]);
+
+  const getUsers = async () => {
+    try {
+      const getstudents = await instance.get("/student/getstudents");
+      setStudents(getstudents.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (
+        formData.firstname == "" &&
+        formData.lastname == "" &&
+        formData.email == "" &&
+        formData.age == 0
+      ) {
+        alert("Data Invalid !");
+      } else {
+        await instance.post("student/addstudent", formData).then((response) => {
+          console.log(response.data);
+          alert("Add Student Successfully !");
+          handleCloseModal();
+          getUsers();
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteUser = async (id:string) => {
+    console.log(id);
+    try {
+      await instance.delete(`student/deletestudent/${id}`)
+      .then(()=>{
+        alert("Delete Student Successfully !")
+        getUsers();
+      })
+    } catch (error) {
+        console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(students);
+  }, [students]);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
-  const gridWidth = isMobileOrTablet ? "100%" : "65%";
+  const gridWidth = isMobileOrTablet ? "100%" : "62%";
 
-  // const handleOpenDrawer = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleCloseDrawer = () => {
-  //   setOpen(false);
-  // };
+  const TextBox_size = useMediaQuery(theme.breakpoints.down("md"));
+  const TextboxWidth = TextBox_size ? "50%" : "40%";
 
   const handleOpenModal = () => {
     setOpenmodal(true);
@@ -235,6 +109,7 @@ function Studentlist() {
     setFormData({
       firstname: "",
       lastname: "",
+      email: "",
       age: 0,
     });
     setOpenmodal(false);
@@ -247,15 +122,176 @@ function Studentlist() {
     });
   };
 
-  const Addstudent = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-  };
+
+  const columns: GridColDef[] = [
+    {
+      field: "no",
+      headerName: "ID",
+      width: 70,
+      filterable: false,
+      hideable: false,
+      sortable: false,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "firstname",
+      headerName: "First name",
+      width: 130,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "lastname",
+      headerName: "Last name",
+      width: 130,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "age",
+      headerName: "Age",
+      type: "number",
+      width: 90,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 250,
+      // valueGetter: (params: GridValueGetterParams) =>
+      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+    },
+    {
+      field: "view",
+      headerName: "View",
+      sortable: false,
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+      renderCell: (params: GridCellParams) => {
+        const handleView = () => {
+          console.log("Edit", params.row.id);
+        };
+
+        return (
+          <div>
+            <Button
+              variant="contained"
+              onClick={handleView}
+              sx={{
+                backgroundColor: "#73C088",
+                ":hover": { backgroundColor: "#397D54" },
+              }}
+              startIcon={<VisibilityIcon />}
+            >
+              View
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      sortable: false,
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+      renderCell: (params: GridCellParams) => {
+        const handleEdit = () => {
+          console.log("Edit", params.row.id);
+        };
+
+        return (
+          <div>
+            <Button
+              variant="contained"
+              onClick={handleEdit}
+              sx={{
+                backgroundColor: "#51C2D5",
+                ":hover": { backgroundColor: "D3E0EA" },
+              }}
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      sortable: false,
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+      disableColumnMenu: true,
+      renderCell: (params: GridCellParams) => {
+
+        const id = params.row.id;
+
+        const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          await deleteUser(id);
+        };
+
+        return (
+          <div>
+            <Button
+              variant="contained"
+              onClick={handleDelete}
+              sx={{
+                backgroundColor: "#FF6962",
+                ":hover": { backgroundColor: "red" },
+              }}
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const rows = students.map((v: StudentsList, k) => ({
+    no: k + 1,
+    id: v.id,
+    firstname: v.firstname,
+    lastname: v.lastname,
+    age: v.age,
+    email: v.email,
+  }));
 
   return (
     <div>
       <Navbar />
-
       <Box
         sx={{
           display: "flex",
@@ -289,7 +325,7 @@ function Studentlist() {
             }}
             size="small"
             sx={{
-              width: "50%",
+              width: TextboxWidth,
             }}
           />
 
@@ -340,7 +376,7 @@ function Studentlist() {
         <Dialog
           open={openmodal}
           onClose={handleCloseModal}
-          PaperProps={{ style: { width: "500px", height: "380px" } }}
+          PaperProps={{ style: { width: "500px", height: "450px" } }}
         >
           <DialogTitle
             sx={{
@@ -352,7 +388,7 @@ function Studentlist() {
           >
             Add Students
           </DialogTitle>
-          <form onSubmit={Addstudent}>
+          <form onSubmit={addUser}>
             <DialogContent>
               <TextField
                 name="firstname"
@@ -366,6 +402,15 @@ function Studentlist() {
                 name="lastname"
                 label="Lastname"
                 value={formData.lastname}
+                onChange={handleChange}
+                fullWidth
+                sx={{ marginTop: 2 }}
+              />
+              <TextField
+                name="email"
+                label="Email"
+                type="email"
+                value={formData.email}
                 onChange={handleChange}
                 fullWidth
                 sx={{ marginTop: 2 }}
