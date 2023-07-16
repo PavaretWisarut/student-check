@@ -3,7 +3,8 @@ import { GetStudents, GetStudentById , Addstudents, UpdateStudent, DeleteStudent
 import { resultOK } from "../middleware/result";
 
 export const getStudents = async (req: Request, res: Response) => {
-    const users = await GetStudents()
+    const name = req.query.name
+    const users = await GetStudents(name)
     resultOK(req, res, users, "เรียกดูข้อมูลนักเรียนทั้งหมด")
 }
 

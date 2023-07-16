@@ -2,8 +2,14 @@ import express, { Request, Response } from "express"
 import { query } from '../config/database';
 import { v4 as uuidv4 } from "uuid"
 
-export const GetStudents = async () => {
-    const sql = 'SELECT * FROM student ORDER BY create_date DESC';
+export const GetStudents = async (name) => {
+    let sql = 'SELECT * FROM student ';
+    if (name){
+        sql += `WHERE firstname like '%${name}%' `
+    }
+    sql += 'ORDER BY create_date DESC'
+    console.log(sql);
+    
     return query(sql)
 }
 

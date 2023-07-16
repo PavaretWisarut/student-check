@@ -26,13 +26,23 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import instance from "../api/axiosinstance";
+import CloseIcon from '@mui/icons-material/Close';
 import { StudentsList } from "../ts/StudentList-interface";
 
 function Studentlist() {
-  // const [open, setOpen] = useState(false);
-  const [openmodal, setOpenmodal] = useState(false);
+  const theme = useTheme();
+  const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const gridWidth = isMobileOrTablet ? "100%" : "62%";
+
+  const TextBox_size = useMediaQuery(theme.breakpoints.down("md"));
+  const TextboxWidth = TextBox_size ? "50%" : "40%";
+
+  const [openmodal, setOpenmodal] = useState(false); //add modal
+  const [openEditmodal, setOpenEditmodal] = useState(false); //add modal
+  const [openViewmodal, setOpenViewmodal] = useState(false); //add modal
 
   const [formData, setFormData] = useState({
+    id: "",
     firstname: "",
     lastname: "",
     email: "",
@@ -40,15 +50,51 @@ function Studentlist() {
   });
 
   const [students, setStudents] = useState([]);
+  const [textsearch , setTextsearch] = useState("")
+
+  useEffect(() => {
+    console.log(students);
+  }, [students]);
+
+  useEffect(() => {
+    getUsers()
+  }, []);
 
   const getUsers = async () => {
     try {
-      const getstudents = await instance.get("/student/getstudents");
+      const getstudents = await instance.get(`/student/getstudents`);
       setStudents(getstudents.data.data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const getSearchUsers = async (name:string) => {
+    try {
+      const getstudents = await instance.get(`/student/getstudents?name=${name}`);
+      setStudents(getstudents.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserByid = async (id: string) => {
+    try {
+      const getstudent = await instance.get(`/student/getstudents/${id}`);
+      setFormData(getstudent.data.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const searchButton = ()=>{
+    getSearchUsers(textsearch)
+  }
+
+  const resetsearchButton = () =>{
+    setTextsearch("")
+    getUsers()
+  }
 
   const addUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,7 +110,7 @@ function Studentlist() {
         await instance.post("student/addstudent", formData).then((response) => {
           console.log(response.data);
           alert("Add Student Successfully !");
-          handleCloseModal();
+          handleCloseAddModal();
           getUsers();
         });
       }
@@ -73,46 +119,81 @@ function Studentlist() {
     }
   };
 
-  const deleteUser = async (id:string) => {
-    console.log(id);
+  const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      await instance.delete(`student/deletestudent/${id}`)
-      .then(()=>{
-        alert("Delete Student Successfully !")
+      await instance.put("student/updatestudent", formData).then((response) => {
+        console.log(response.data);
+        alert("Edit Student Successfully !");
+        handleCloseEditModal();
         getUsers();
-      })
+      });
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 
-  useEffect(() => {
-    console.log(students);
-  }, [students]);
+  const deleteUser = async (id: string) => {
+    console.log(id);
+    try {
+      await instance.delete(`student/deletestudent/${id}`).then(() => {
+        alert("Delete Student Successfully !");
+        getUsers();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  
 
-  const theme = useTheme();
-  const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
-  const gridWidth = isMobileOrTablet ? "100%" : "62%";
-
-  const TextBox_size = useMediaQuery(theme.breakpoints.down("md"));
-  const TextboxWidth = TextBox_size ? "50%" : "40%";
-
-  const handleOpenModal = () => {
+  const handleOpenAddModal = () => {
     setOpenmodal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseAddModal = () => {
     setFormData({
+      id: "",
       firstname: "",
       lastname: "",
       email: "",
       age: 0,
     });
     setOpenmodal(false);
+  };
+
+  const handleOpenEditModal = (id: string) => {
+    setOpenEditmodal(true);
+    getUserByid(id);
+    console.log(formData);
+  };
+
+  const handleCloseEditModal = () => {
+    setFormData({
+      id: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      age: 0,
+    });
+    setOpenEditmodal(false);
+  };
+
+  const handleOpenViewModal = (id: string) => {
+    setOpenViewmodal(true);
+    getUserByid(id);
+    console.log(formData);
+  };
+
+  const handleCloseViewModal = () => {
+    setFormData({
+      id: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      age: 0,
+    });
+    setOpenViewmodal(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +203,7 @@ function Studentlist() {
     });
   };
 
+  
 
   const columns: GridColDef[] = [
     {
@@ -193,8 +275,9 @@ function Studentlist() {
       headerAlign: "center",
       disableColumnMenu: true,
       renderCell: (params: GridCellParams) => {
-        const handleView = () => {
-          console.log("Edit", params.row.id);
+        const handleView = async () => {
+          const id = params.row.id;
+          await handleOpenViewModal(id);
         };
 
         return (
@@ -223,8 +306,10 @@ function Studentlist() {
       headerAlign: "center",
       disableColumnMenu: true,
       renderCell: (params: GridCellParams) => {
-        const handleEdit = () => {
+        const handleEdit = async () => {
+          const id = params.row.id;
           console.log("Edit", params.row.id);
+          await handleOpenEditModal(id);
         };
 
         return (
@@ -253,7 +338,6 @@ function Studentlist() {
       headerAlign: "center",
       disableColumnMenu: true,
       renderCell: (params: GridCellParams) => {
-
         const id = params.row.id;
 
         const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -315,7 +399,9 @@ function Studentlist() {
         >
           <TextField
             variant="outlined"
-            placeholder="Search By Name"
+            placeholder="Search By Firstname"
+            value={textsearch}
+            onChange={(e)=> setTextsearch(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -331,13 +417,10 @@ function Studentlist() {
 
           <Button
             variant="contained"
-            // onClick={handleDelete}
-            // color = "primary"
+            onClick={searchButton}
             sx={{
               backgroundColor: "#4F80C0",
-              // ":hover": { backgroundColor: "#78A3D4" },
               marginLeft: "1%",
-              mr: "1%",
             }}
             startIcon={<SearchIcon />}
           >
@@ -345,7 +428,20 @@ function Studentlist() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleOpenModal}
+            onClick={resetsearchButton}
+            color = "error"
+            sx={{
+              backgroundColor: "#FF6962",
+              marginLeft: "0.5%",
+              mr: "1%",
+            }}
+            startIcon={<CloseIcon />}
+          >
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleOpenAddModal}
             sx={{
               backgroundColor: "#F2C94C",
               ":hover": { backgroundColor: "#DFA003" },
@@ -375,7 +471,7 @@ function Studentlist() {
         {/* Create A Modal to add student  */}
         <Dialog
           open={openmodal}
-          onClose={handleCloseModal}
+          onClose={handleCloseAddModal}
           PaperProps={{ style: { width: "500px", height: "450px" } }}
         >
           <DialogTitle
@@ -419,14 +515,23 @@ function Studentlist() {
                 name="age"
                 label="Age"
                 type="number"
-                value={formData.age}
+                value={formData.age < 0 ? 0 : formData.age}
                 onChange={handleChange}
                 fullWidth
-                sx={{ marginTop: 2 }}
+                sx={{
+                  marginTop: 2,
+                  '& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button': {
+                    '-webkit-appearance': 'none',
+                    margin: 0,
+                  },
+                  '& input[type=number]': {
+                    '-moz-appearance': 'textfield',
+                  },
+                }}
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseModal}>Cancel</Button>
+              <Button onClick={handleCloseAddModal}>Cancel</Button>
               <Button color="primary" type="submit">
                 Save
               </Button>
@@ -435,6 +540,151 @@ function Studentlist() {
         </Dialog>
 
         {/* Create A Modal to add student  */}
+
+        {/* Create A Modal to Update student  */}
+
+        <Dialog
+          open={openEditmodal}
+          onClose={handleCloseEditModal}
+          PaperProps={{ style: { width: "500px", height: "450px" } }}
+        >
+          <DialogTitle
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 1,
+              fontSize: 20,
+            }}
+          >
+            Edit Students
+          </DialogTitle>
+          <form onSubmit={updateUser}>
+            <DialogContent>
+              <TextField
+                name="firstname"
+                label="Firstname"
+                value={formData.firstname}
+                onChange={handleChange}
+                fullWidth
+                sx={{ marginTop: 1 }}
+              />
+              <TextField
+                name="lastname"
+                label="Lastname"
+                value={formData.lastname}
+                onChange={handleChange}
+                fullWidth
+                sx={{ marginTop: 2 }}
+              />
+              <TextField
+                name="email"
+                label="Email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                fullWidth
+                sx={{ marginTop: 2 }}
+              />
+              <TextField
+                name="age"
+                label="Age"
+                type="number"
+                value={formData.age < 0 ? 0 : formData.age}
+                onChange={handleChange}
+                fullWidth
+                sx={{
+                  marginTop: 2,
+                  '& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button': {
+                    '-webkit-appearance': 'none',
+                    margin: 0,
+                  },
+                  '& input[type=number]': {
+                    '-moz-appearance': 'textfield',
+                  },
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseEditModal}>Cancel</Button>
+              <Button color="primary" type="submit">
+                Save
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+
+        {/* Create A Modal to Update student  */}
+
+        {/* Create A Modal to View student  */}
+        <Dialog
+          open={openViewmodal}
+          onClose={handleCloseViewModal}
+          PaperProps={{ style: { width: "500px", height: "450px" } }}
+        >
+          <DialogTitle
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 1,
+              fontSize: 20,
+            }}
+          >
+            View Student
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              name="firstname"
+              label="Firstname"
+              value={formData.firstname}
+              onChange={handleChange}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ marginTop: 1 }}
+            />
+            <TextField
+              name="lastname"
+              label="Lastname"
+              value={formData.lastname}
+              onChange={handleChange}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ marginTop: 2 }}
+            />
+            <TextField
+              name="email"
+              label="Email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ marginTop: 2 }}
+            />
+            <TextField
+              name="age"
+              label="Age"
+              type="number"
+              value={formData.age}
+              onChange={handleChange}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ marginTop: 2 }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseViewModal} fullWidth>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Create A Modal to View student  */}
       </Box>
     </div>
   );
