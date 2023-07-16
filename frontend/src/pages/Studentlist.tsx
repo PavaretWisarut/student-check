@@ -28,6 +28,7 @@ import AddIcon from "@mui/icons-material/Add";
 import instance from "../api/axiosinstance";
 import CloseIcon from '@mui/icons-material/Close';
 import { StudentsList } from "../ts/StudentList-interface";
+import Swal from "sweetalert2"
 
 function Studentlist() {
   const theme = useTheme();
@@ -105,11 +106,24 @@ function Studentlist() {
         formData.email == "" &&
         formData.age == 0
       ) {
-        alert("Data Invalid !");
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Data Invalid !',
+          timer: 2000
+        })
+        handleCloseAddModal();
       } else {
         await instance.post("student/addstudent", formData).then((response) => {
           console.log(response.data);
-          alert("Add Student Successfully !");
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Add Student Successfully',
+            showConfirmButton: false,
+            timer: 2000
+          })
+          // alert("Add Student Successfully !");
           handleCloseAddModal();
           getUsers();
         });
@@ -124,7 +138,12 @@ function Studentlist() {
     try {
       await instance.put("student/updatestudent", formData).then((response) => {
         console.log(response.data);
-        alert("Edit Student Successfully !");
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Edit Student Successfully',
+          timer: 2000
+        })
         handleCloseEditModal();
         getUsers();
       });
@@ -136,10 +155,26 @@ function Studentlist() {
   const deleteUser = async (id: string) => {
     console.log(id);
     try {
-      await instance.delete(`student/deletestudent/${id}`).then(() => {
-        alert("Delete Student Successfully !");
-        getUsers();
-      });
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to delete This Student ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await instance.delete(`student/deletestudent/${id}`).then(()=>{
+            Swal.fire(
+              'Deleted!',
+              'Deleted Student Successfully',
+              'success'
+            )
+            getUsers();
+          })
+        }
+      })
     } catch (error) {
       console.log(error);
     }
@@ -619,7 +654,7 @@ function Studentlist() {
         <Dialog
           open={openViewmodal}
           onClose={handleCloseViewModal}
-          PaperProps={{ style: { width: "500px", height: "450px" } }}
+          PaperProps={{ style: { width: "500px", height: "425px" } }}
         >
           <DialogTitle
             sx={{
@@ -680,7 +715,7 @@ function Studentlist() {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseViewModal} fullWidth>Cancel</Button>
+            <Button onClick={handleCloseViewModal} fullWidth color="primary">Cancel</Button>
           </DialogActions>
         </Dialog>
 

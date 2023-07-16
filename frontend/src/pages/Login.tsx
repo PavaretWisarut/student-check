@@ -12,14 +12,51 @@ import {
   Button,
   Grid,
   Link as MuiLink,
+  Paper,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
+import loginImg from "../assets/pictures/login-img.png"
 
 function Login() {
   return (
     <React.Fragment>
+      {/* <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 17,
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            width: "1000px",
+            height: "650px",
+            backgroundColor: "grey",
+            borderRadius:"20px"
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <img
+              src={loginImg}
+              alt="Student-Checklist"
+              // loading="lazy"
+              width="500px"
+              height="650px"
+              style={{borderRadius:"20px"}}
+            />
+
+          </Box>
+        </Paper>
+      </Box> */}
+
       <Container maxWidth="xs">
         <Box
           sx={{
@@ -76,7 +113,7 @@ function Login() {
           </Link>
           <Grid container sx={{ mt: 2, mb: 8 }}>
             <Grid item xs>
-              <MuiLink target="_blank">Forgor Password?</MuiLink>
+              <MuiLink href="#" target="_blank">Forgor Password?</MuiLink>
             </Grid>
             <Grid item>
               <MuiLink href="#">Don't have an account? sign up</MuiLink>
@@ -88,16 +125,6 @@ function Login() {
             color="text.secondary"
           >
             Copyright ©{" "}
-            {/* <MuiLink
-              href="https://www.google.com"
-              target="_blank"
-              variant="inherit"
-              color="text.primary"
-              underline="none"
-            >
-              {" "}
-              Click Here My Website{" "}
-            </MuiLink>{" "} */}
             Pavaret Wisarut
             2023.
           </Typography>
