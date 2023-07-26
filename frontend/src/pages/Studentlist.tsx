@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -26,11 +26,15 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import instance from "../api/axiosinstance";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { StudentsList } from "../ts/StudentList-interface";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
+import { UserContext } from "../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Studentlist() {
+  const { user } = useContext(UserContext);
+
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "62%";
@@ -51,14 +55,12 @@ function Studentlist() {
   });
 
   const [students, setStudents] = useState([]);
-  const [textsearch , setTextsearch] = useState("")
+  const [textsearch, setTextsearch] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(students);
-  }, [students]);
-
-  useEffect(() => {
-    getUsers()
+    getUsers();
   }, []);
 
   const getUsers = async () => {
@@ -70,9 +72,21 @@ function Studentlist() {
     }
   };
 
-  const getSearchUsers = async (name:string) => {
+  useEffect(() => {
+    if (!user) {
+      return navigate("/")
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return null;
+  }
+
+  const getSearchUsers = async (name: string) => {
     try {
-      const getstudents = await instance.get(`/student/getstudents?name=${name}`);
+      const getstudents = await instance.get(
+        `/student/getstudents?name=${name}`
+      );
       setStudents(getstudents.data.data);
     } catch (error) {
       console.error(error);
@@ -88,14 +102,14 @@ function Studentlist() {
     }
   };
 
-  const searchButton = ()=>{
-    getSearchUsers(textsearch)
-  }
+  const searchButton = () => {
+    getSearchUsers(textsearch);
+  };
 
-  const resetsearchButton = () =>{
-    setTextsearch("")
-    getUsers()
-  }
+  const resetsearchButton = () => {
+    setTextsearch("");
+    getUsers();
+  };
 
   const addUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,22 +121,22 @@ function Studentlist() {
         formData.age == 0
       ) {
         Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Data Invalid !',
-          timer: 2000
-        })
+          position: "center",
+          icon: "error",
+          title: "Data Invalid !",
+          timer: 2000,
+        });
         handleCloseAddModal();
       } else {
         await instance.post("student/addstudent", formData).then((response) => {
           console.log(response.data);
           Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Add Student Successfully',
+            position: "center",
+            icon: "success",
+            title: "Add Student Successfully",
             showConfirmButton: false,
-            timer: 2000
-          })
+            timer: 2000,
+          });
           // alert("Add Student Successfully !");
           handleCloseAddModal();
           getUsers();
@@ -139,11 +153,11 @@ function Studentlist() {
       await instance.put("student/updatestudent", formData).then((response) => {
         console.log(response.data);
         Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Edit Student Successfully',
-          timer: 2000
-        })
+          position: "center",
+          icon: "success",
+          title: "Edit Student Successfully",
+          timer: 2000,
+        });
         handleCloseEditModal();
         getUsers();
       });
@@ -156,31 +170,25 @@ function Studentlist() {
     console.log(id);
     try {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You want to delete This Student ?",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await instance.delete(`student/deletestudent/${id}`).then(()=>{
-            Swal.fire(
-              'Deleted!',
-              'Deleted Student Successfully',
-              'success'
-            )
+          await instance.delete(`student/deletestudent/${id}`).then(() => {
+            Swal.fire("Deleted!", "Deleted Student Successfully", "success");
             getUsers();
-          })
+          });
         }
-      })
+      });
     } catch (error) {
       console.log(error);
     }
   };
-
-  
 
   const handleOpenAddModal = () => {
     setOpenmodal(true);
@@ -237,8 +245,6 @@ function Studentlist() {
       [e.target.name]: e.target.value,
     });
   };
-
-  
 
   const columns: GridColDef[] = [
     {
@@ -436,7 +442,7 @@ function Studentlist() {
             variant="outlined"
             placeholder="Search By Firstname"
             value={textsearch}
-            onChange={(e)=> setTextsearch(e.target.value)}
+            onChange={(e) => setTextsearch(e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -464,7 +470,7 @@ function Studentlist() {
           <Button
             variant="contained"
             onClick={resetsearchButton}
-            color = "error"
+            color="error"
             sx={{
               backgroundColor: "#FF6962",
               marginLeft: "0.5%",
@@ -555,12 +561,13 @@ function Studentlist() {
                 fullWidth
                 sx={{
                   marginTop: 2,
-                  '& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button': {
-                    '-webkit-appearance': 'none',
-                    margin: 0,
-                  },
-                  '& input[type=number]': {
-                    '-moz-appearance': 'textfield',
+                  "& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button":
+                    {
+                      "-webkit-appearance": "none",
+                      margin: 0,
+                    },
+                  "& input[type=number]": {
+                    "-moz-appearance": "textfield",
                   },
                 }}
               />
@@ -629,12 +636,13 @@ function Studentlist() {
                 fullWidth
                 sx={{
                   marginTop: 2,
-                  '& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button': {
-                    '-webkit-appearance': 'none',
-                    margin: 0,
-                  },
-                  '& input[type=number]': {
-                    '-moz-appearance': 'textfield',
+                  "& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button":
+                    {
+                      "-webkit-appearance": "none",
+                      margin: 0,
+                    },
+                  "& input[type=number]": {
+                    "-moz-appearance": "textfield",
                   },
                 }}
               />
@@ -715,7 +723,9 @@ function Studentlist() {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseViewModal} fullWidth color="primary">Cancel</Button>
+            <Button onClick={handleCloseViewModal} fullWidth color="primary">
+              Cancel
+            </Button>
           </DialogActions>
         </Dialog>
 

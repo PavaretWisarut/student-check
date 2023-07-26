@@ -1,4 +1,4 @@
-import * as React from "react";
+import React , { useContext } from "react";
 // import "./App.css";
 import {
   Container,
@@ -12,14 +12,21 @@ import {
   Button,
   Grid,
   Link as MuiLink,
-  Paper,
+  // Paper,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
-import loginImg from "../assets/pictures/login-img.png"
+import { UserContext } from "../auth/AuthContext"
+// import loginImg from "../assets/pictures/login-img.png"
 
 function Login() {
+  const userContext = useContext(UserContext)
+  console.log(userContext);
+
+  const login = ()=>{
+    userContext.setUser(true)
+  }
   return (
     <React.Fragment>
       {/* <Box
@@ -107,7 +114,7 @@ function Login() {
             </FormGroup>
           </Box>
           <Link to={"/studentlist"} style={{width : "100%"}} >
-            <Button variant="contained" fullWidth>
+            <Button variant="contained" fullWidth onClick={login}>
               Sign in
             </Button>
           </Link>

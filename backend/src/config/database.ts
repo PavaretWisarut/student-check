@@ -1,10 +1,12 @@
 import mysql, { Connection } from 'mysql';
+import dotenv from "dotenv"
+dotenv.config()
 
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'studentcheck',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 export const query = (sql: string, values?: any[]): Promise<any> => {
@@ -17,7 +19,6 @@ export const query = (sql: string, values?: any[]): Promise<any> => {
 
       connection.query(sql, values, (error, results) => {
         connection.release();
-
         if (error) {
           reject(error);
         } else {
