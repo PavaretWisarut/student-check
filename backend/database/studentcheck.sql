@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2023 at 08:36 PM
+-- Generation Time: Jul 26, 2023 at 12:28 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `studentcheck`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE `members` (
+  `id` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `fistname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `age` int(20) NOT NULL,
+  `path` varchar(200) DEFAULT NULL,
+  `create_by` varchar(100) DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
+  `update_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`id`, `email`, `password`, `fistname`, `lastname`, `age`, `path`, `create_by`, `create_date`, `update_by`, `update_date`) VALUES
+('66fa78f6-0556-4e51-afd3-35800bd04504', 'pavaret@gmail.com', '$2b$05$MoOKHrmjzMkfBCrXaLDvIOZeeAU4OsA7INXR1V6WurksbIh4t7dIy', 'pavaret', 'wisarut', 24, NULL, '66fa78f6-0556-4e51-afd3-35800bd04504', '2023-07-26', '66fa78f6-0556-4e51-afd3-35800bd04504', '2023-07-26');
 
 -- --------------------------------------------------------
 
@@ -61,6 +88,7 @@ CREATE TABLE `student` (
 INSERT INTO `student` (`id`, `firstname`, `lastname`, `email`, `age`, `create_date`, `create_by`, `update_date`, `update_by`) VALUES
 ('28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef', 'pavaretyu', 'turboza007', 'Prayuth.ChaOcha@gmail.com', 22, '2023-07-09 13:33:44', '28fd5d42-3b2c-4ede-8', '2023-07-15 20:54:48', '28fd5d42-3b2c-4ede-8'),
 ('615da075-5569-4938-b615-a100e2e76462', 'pavaret', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:36', '615da075-5569-4938-b', '2023-07-09 13:33:36', '615da075-5569-4938-b'),
+('7e4dadef-da8b-4b38-afac-ccda4f58ef45', 'sasa', 'hello', 'hello@gmail.com', 32, '2023-07-26 10:39:36', '7e4dadef-da8b-4b38-a', '2023-07-26 10:39:36', '7e4dadef-da8b-4b38-a'),
 ('a6fd31c8-b593-484f-9989-332a461dfb7b', 'pavaret1', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9', '2023-07-09 13:33:42', 'a6fd31c8-b593-484f-9'),
 ('b256eeb5-27ab-480c-8129-ca10f1d2fe7b', 'Phita', 'ChanoCHa', 'ChanoChaya@gmail.com', 40, '2023-07-16 01:34:36', 'b256eeb5-27ab-480c-8', '2023-07-16 01:34:36', 'b256eeb5-27ab-480c-8'),
 ('f1867b9b-c9e1-41c3-a942-1ffdc9da868d', 'pavaret4', 'wisarut', 'Prayuth.ChaOcha@gmail.com', 23, '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a', '2023-07-09 13:33:50', 'f1867b9b-c9e1-41c3-a');
@@ -115,6 +143,12 @@ INSERT INTO `title` (`id`, `title_name`, `create_by`, `create_date`, `update_by`
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `members`
+--
+ALTER TABLE `members`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `role`

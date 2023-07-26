@@ -1,10 +1,5 @@
 import React, { createContext, useState } from "react";
 
-// type AuthUser = {
-//   email: string;
-//   name: string;
-// };
-
 export type UserContextType = {
   user: any;
   setUser: any;

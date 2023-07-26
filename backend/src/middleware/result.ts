@@ -9,3 +9,11 @@ export const resultOK = async (req: Request,res :Response , data:any, msg:string
     }
     )
 }
+
+export const resultError = async (req: Request,res :Response , code:number, msg:string ) =>{
+    return res.status(code).json({
+        code: code,
+        message : msg,
+        status : false,
+      });
+}
