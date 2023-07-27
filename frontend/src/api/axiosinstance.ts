@@ -2,11 +2,12 @@ import axios from "axios";
 // import Cookies from "universal-cookie";
 
 // const cookies = new Cookies()
+const API_dev = import.meta.env.VITE_API_DEV
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/',
-    headers: {'Content-Type': 'application/json'},
-  });
+  baseURL: API_dev,
+  headers: { 'Content-Type': 'application/json' },
+});
 
 // console.log("acToken from instance axios : " , cookies.get("accesstoken"));
 
