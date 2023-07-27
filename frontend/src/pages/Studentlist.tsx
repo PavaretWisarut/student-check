@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -29,11 +29,12 @@ import instance from "../api/axiosinstance";
 import CloseIcon from "@mui/icons-material/Close";
 import { StudentsList } from "../ts/StudentList-interface";
 import Swal from "sweetalert2";
-import { UserContext } from "../auth/AuthContext";
+import Cookies from "universal-cookie";
+// import { UserContext } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Studentlist() {
-  const { user } = useContext(UserContext);
+  // const { user , setUser} = useContext(UserContext);
 
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -57,11 +58,23 @@ function Studentlist() {
   const [students, setStudents] = useState([]);
   const [textsearch, setTextsearch] = useState("");
 
+  const cookies = new Cookies();
   const navigate = useNavigate();
 
+  const access_token = cookies.get("accesstoken");
+
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (access_token) {
+      getUsers();
+    } else {
+      navigate("/");
+    }
+  }, [navigate, access_token]);
+
+    /// check access token if not exist return to path /
+  if (!access_token) {
+    return null;
+  }
 
   const getUsers = async () => {
     try {
@@ -71,16 +84,6 @@ function Studentlist() {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (!user) {
-      return navigate("/")
-    }
-  }, [user, navigate]);
-
-  if (!user) {
-    return null;
-  }
 
   const getSearchUsers = async (name: string) => {
     try {

@@ -1,26 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import {
-  Box,
-  Button,
-  TextField,
-  // InputAdornment,
-  Typography,
-  // Dialog,
-  // DialogTitle,
-  // DialogContent,
-  // DialogActions,
-  Avatar,
-} from "@mui/material";
+import { Box, Button, TextField, Typography, Avatar } from "@mui/material";
 import avatarthumbnail from "../assets/pictures/AvatarThumnail.jpg";
-// import SearchIcon from "@mui/icons-material/Search";
+import instance from "../api/axiosinstance";
 import { useTheme } from "@mui/material/styles";
+// import { ProfileInterface } from "../ts/Profile-interface"
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Profile() {
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("sm"));
   // const Responsive = isMobileOrTablet ? "100%" : "65%";
+  const [profile, setProfile] = useState({
+    id: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    age: 0,
+  });
+
+  useEffect(() => {
+    getMyprofile();
+  }, []);
+
+  // waiting for api get member by
+  const getMyprofile = async () => {
+    try {
+      const getstudent = await instance.get(
+        `/student/getstudents/a6fd31c8-b593-484f-9989-332a461dfb7b`
+      );
+      setProfile(getstudent.data.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfile({
+      ...profile,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -71,7 +91,8 @@ function Profile() {
               <TextField
                 variant="outlined"
                 name="firstname"
-                placeholder="Pavaret"
+                value={profile.firstname}
+                onChange={handleChange}
                 size="small"
                 sx={{
                   width: "auto",
@@ -86,7 +107,8 @@ function Profile() {
               <TextField
                 variant="outlined"
                 name="lastname"
-                placeholder="Wisarut"
+                value={profile.lastname}
+                onChange={handleChange}
                 size="small"
                 sx={{
                   width: "auto",
@@ -111,13 +133,23 @@ function Profile() {
               <TextField
                 type="number"
                 name="age"
+                value={profile.age < 0 ? 0 : profile.age}
+                onChange={handleChange}
                 variant="outlined"
-                placeholder="24"
                 size="small"
                 sx={{
                   width: "auto",
                   ml: 2,
                   mr: 4,
+                  marginTop: 2,
+                  "& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button":
+                    {
+                      "-webkit-appearance": "none",
+                      margin: 0,
+                    },
+                  "& input[type=number]": {
+                    "-moz-appearance": "textfield",
+                  },
                 }}
               />
 
@@ -128,7 +160,8 @@ function Profile() {
                 type="email"
                 name="email"
                 variant="outlined"
-                placeholder="Pavaret@gmail.com"
+                onChange={handleChange}
+                value={profile.email}
                 size="small"
                 sx={{
                   width: "auto",
@@ -198,7 +231,8 @@ function Profile() {
             <TextField
               name="firstname"
               variant="outlined"
-              placeholder="Pavaret"
+              onChange={handleChange}
+              value={profile.firstname}
               size="small"
               sx={{
                 width: "auto",
@@ -212,7 +246,8 @@ function Profile() {
             <TextField
               name="lastname"
               variant="outlined"
-              placeholder="Wisarut"
+              onChange={handleChange}
+              value={profile.lastname}
               size="small"
               sx={{
                 width: "auto",
@@ -227,12 +262,22 @@ function Profile() {
               name="age"
               type="number"
               variant="outlined"
-              placeholder="24"
+              onChange={handleChange}
+              value={profile.age < 0 ? 0 : profile.age}
               size="small"
               sx={{
                 width: "auto",
                 ml: 2,
                 textAlign: "center",
+                marginTop: 2,
+                "& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button":
+                  {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                "& input[type=number]": {
+                  "-moz-appearance": "textfield",
+                },
               }}
             />
 
@@ -243,7 +288,8 @@ function Profile() {
               name="email"
               type="email"
               variant="outlined"
-              placeholder="Pavaret@gmail.com"
+              onChange={handleChange}
+              value={profile.email}
               size="small"
               sx={{
                 width: "auto",

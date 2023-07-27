@@ -31,11 +31,15 @@ import FaceIcon from "@mui/icons-material/Face";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import HealingIcon from "@mui/icons-material/Healing";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
+
+  const cookies = new Cookies();
+  const navigate = useNavigate();
 
   const pageNav = [
     {
@@ -71,6 +75,11 @@ export default function MenuAppBar() {
     setOpen(false);
   };
 
+  const logOut =  () => {
+    cookies.remove("accesstoken");
+    cookies.remove("refreshtoken");
+    navigate("/");
+  };
   // const isMobile = useMediaQuery((theme:Theme) => theme.breakpoints.down("sm"));
   return (
     <React.Fragment>
@@ -131,9 +140,9 @@ export default function MenuAppBar() {
                 >
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
                 </Link>
-                <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-                  <MenuItem>Log Out</MenuItem>
-                </Link>
+                {/* <Link to="/" style={{ textDecoration: "none", color: "black" }}> */}
+                <MenuItem onClick={logOut}>Log Out</MenuItem>
+                {/* </Link> */}
               </Menu>
             </div>
           </Toolbar>
