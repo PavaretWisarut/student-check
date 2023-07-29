@@ -9,18 +9,21 @@ export const GetSubject = async () => {
 
 export const GetSubjectById = async (id) => {
     const sql = 'SELECT * FROM subject WHERE id = ? ORDER BY create_date ASC';
-    return query(sql , id)
+    return query(sql, id)
 }
 
 
-export const AddSubject = async (models:any) => {
+export const AddSubject = async (models: any) => {
     const id = uuidv4()
-    const sql = `INSERT INTO subject (id, subject_name	, student_id, create_date, create_by, update_date, update_by)
-               VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO subject (id, subject_name	, student_id, credit, members_id ,RoomNo,  create_date, create_by, update_date, update_by)
+               VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)`;
     const values = [
         id,
         models.subject_name,
         models.student_id,
+        models.credit,
+        models.members_id,
+        models.roomno,
         new Date(),
         id, // Uid from token That will fix later !!
         new Date(),
@@ -34,19 +37,22 @@ export const AddSubject = async (models:any) => {
 
 export const UpdateSubject = async (models: any) => {
     const id = models.id;
-    const sql = `UPDATE subject SET subject_name = ?, student_id = ?, update_date = ?, update_by = ?
-               WHERE id = ?`;
+    const sql = `UPDATE subject SET subject_name = ?, student_id = ?, credit = ?, members_id = ?, RoomNo = ?, update_date = ?, update_by = ? WHERE id = ?`;
     const values = [
         models.subject_name,
         models.student_id,
+        models.credit,
+        models.members_id,
+        models.roomno,
         new Date(),
-        id, // Uid from token That will fix later !!
+        models.members_id, // Fixed the placeholder to update_by
         id,
     ];
 
     await query(sql, values);
 
     return id;
+
 }
 
 export const DeleteSubject = async (id: any) => {

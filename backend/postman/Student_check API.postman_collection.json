@@ -1,0 +1,440 @@
+{
+	"info": {
+		"_postman_id": "5150b8d1-3d9a-4f69-92c8-b00d4cf8edfd",
+		"name": "Student_check API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24783889",
+		"_collection_link": "https://warped-trinity-282729.postman.co/workspace/API~5799d269-f15d-4f4a-a772-06601ae641a4/collection/24783889-5150b8d1-3d9a-4f69-92c8-b00d4cf8edfd?action=share&creator=24783889&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "getstudent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/student/getstudents?name=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"getstudents"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getstudentByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/student/getstudents/12138fac-a367-49ca-8b6e-057e3d11f79a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"getstudents",
+								"12138fac-a367-49ca-8b6e-057e3d11f79a"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addstudent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"pavaret1100\",\r\n    \"lastname\" : \"wisarut\",\r\n    \"email\" : \"pavaret10@gmail.com\",\r\n    \"age\" : 23,\r\n    \"class_id\" : \"ad224677-c191-4716-9f61-aede2b8e02ff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/student/addstudent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"addstudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatestudent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef\" , \r\n    \"firstname\" : \"pavaretyu\",\r\n    \"lastname\" : \"turboza007\",\r\n    \"email\" : \"pavaretyuu@gmail.com\",\r\n    \"age\" : 22,\r\n    \"class_id\" : \"e661b92b-bee3-4a26-a257-c050fc005b79\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/student/updatestudent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"updatestudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletestudent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/student/deletestudent/b0cb17b0-13e6-4f25-a6eb-1e21b84d7efe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"student",
+								"deletestudent",
+								"b0cb17b0-13e6-4f25-a6eb-1e21b84d7efe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subject",
+			"item": [
+				{
+					"name": "getsubjects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/subject/getsubjects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"subject",
+								"getsubjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getsubjectByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/subject/getsubjects/fbc061b8-e39e-4df6-a676-8a49a06eec05",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"subject",
+								"getsubjects",
+								"fbc061b8-e39e-4df6-a676-8a49a06eec05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addsubject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subject_name\" : \"ภาษาไทย\",\r\n    \"student_id\" : \"28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef\",\r\n    \"credit\" : 4,\r\n    \"members_id\" : \"66fa78f6-0556-4e51-afd3-35800bd04504\",\r\n    \"roomno\" : \"A201\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/subject/addsubjects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"subject",
+								"addsubjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatesubject",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"909cd698-ed7b-4b5a-9cd8-33cc730c077f\",\r\n    \"subject_name\" : \"ภาษาอังกฤษ\",\r\n    \"student_id\" : \"28fd5d42-3b2c-4ede-8d1f-ca7a3911bcef\",\r\n    \"credit\" : 2,\r\n    \"members_id\" : \"66fa78f6-0556-4e51-afd3-35800bd04504\",\r\n    \"roomno\" : \"A202\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/subject/updatesubjects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"subject",
+								"updatesubjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletesubject",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/subject/deletesubjects/60a8bac7-e172-4f52-8738-9d07d0731117",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"subject",
+								"deletesubjects",
+								"60a8bac7-e172-4f52-8738-9d07d0731117"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"pavaret@gmail.com\",\r\n    \"password\" : \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "members",
+			"item": [
+				{
+					"name": "getmemberByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/member/getmember/66fa78f6-0556-4e51-afd3-35800bd04504",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"member",
+								"getmember",
+								"66fa78f6-0556-4e51-afd3-35800bd04504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getmember",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/member/getmember",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"member",
+								"getmember"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "master",
+			"item": [
+				{
+					"name": "addClassmaster",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"12th grade\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/master/addclassmaster",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"master",
+								"addclassmaster"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClassmaster",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

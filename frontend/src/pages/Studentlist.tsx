@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  DataGrid,
-  GridColDef,
-  GridValueGetterParams,
-  GridCellParams,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
 import "../App.css";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -18,6 +13,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  InputLabel,
+  FormControl,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,14 +26,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import instance from "../api/axiosinstance";
 import CloseIcon from "@mui/icons-material/Close";
-import { StudentsList } from "../ts/StudentList-interface";
+import { StudentsList, ClassData } from "../ts/StudentList-interface";
 import Swal from "sweetalert2";
 import Cookies from "universal-cookie";
-// import { UserContext } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Studentlist() {
-  // const { user , setUser} = useContext(UserContext);
 
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -53,10 +50,13 @@ function Studentlist() {
     lastname: "",
     email: "",
     age: 0,
+    class: "",
+    class_id: "",
   });
 
   const [students, setStudents] = useState([]);
   const [textsearch, setTextsearch] = useState("");
+  const [classData, setClassData] = useState([]);
 
   const cookies = new Cookies();
   const navigate = useNavigate();
@@ -71,7 +71,11 @@ function Studentlist() {
     }
   }, [navigate, access_token]);
 
-    /// check access token if not exist return to path /
+  useEffect(() => {
+    getClass();
+  }, []);
+
+  /// check access token if not exist return to path /
   if (!access_token) {
     return null;
   }
@@ -121,7 +125,8 @@ function Studentlist() {
         formData.firstname == "" &&
         formData.lastname == "" &&
         formData.email == "" &&
-        formData.age == 0
+        formData.age == 0 &&
+        formData.class_id == ""
       ) {
         Swal.fire({
           position: "center",
@@ -153,7 +158,15 @@ function Studentlist() {
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await instance.put("student/updatestudent", formData).then((response) => {
+      const data = {
+        id: formData.id,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: formData.email,
+        age: formData.age,
+        class_id: formData.class_id,
+      };
+      await instance.put("student/updatestudent", data).then((response) => {
         console.log(response.data);
         Swal.fire({
           position: "center",
@@ -193,6 +206,15 @@ function Studentlist() {
     }
   };
 
+  const getClass = async () => {
+    try {
+      const getclassmaster = await instance.get(`/master/getclassmaster`);
+      setClassData(getclassmaster.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleOpenAddModal = () => {
     setOpenmodal(true);
   };
@@ -204,6 +226,8 @@ function Studentlist() {
       lastname: "",
       email: "",
       age: 0,
+      class: "",
+      class_id: "",
     });
     setOpenmodal(false);
   };
@@ -221,6 +245,8 @@ function Studentlist() {
       lastname: "",
       email: "",
       age: 0,
+      class: "",
+      class_id: "",
     });
     setOpenEditmodal(false);
   };
@@ -238,6 +264,8 @@ function Studentlist() {
       lastname: "",
       email: "",
       age: 0,
+      class: "",
+      class_id: "",
     });
     setOpenViewmodal(false);
   };
@@ -292,20 +320,16 @@ function Studentlist() {
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 250,
-      // valueGetter: (params: GridValueGetterParams) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
       align: "center",
       headerAlign: "center",
       disableColumnMenu: true,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "class",
+      headerName: "Grade",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 160,
-      valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
       align: "center",
       headerAlign: "center",
       disableColumnMenu: true,
@@ -415,6 +439,7 @@ function Studentlist() {
     lastname: v.lastname,
     age: v.age,
     email: v.email,
+    class: v.class,
   }));
 
   return (
@@ -516,7 +541,7 @@ function Studentlist() {
         <Dialog
           open={openmodal}
           onClose={handleCloseAddModal}
-          PaperProps={{ style: { width: "500px", height: "450px" } }}
+          PaperProps={{ style: { width: "500px", height: "520px" } }}
         >
           <DialogTitle
             sx={{
@@ -531,6 +556,7 @@ function Studentlist() {
           <form onSubmit={addUser}>
             <DialogContent>
               <TextField
+                required
                 name="firstname"
                 label="Firstname"
                 value={formData.firstname}
@@ -539,6 +565,7 @@ function Studentlist() {
                 sx={{ marginTop: 1 }}
               />
               <TextField
+                required
                 name="lastname"
                 label="Lastname"
                 value={formData.lastname}
@@ -547,6 +574,7 @@ function Studentlist() {
                 sx={{ marginTop: 2 }}
               />
               <TextField
+                required
                 name="email"
                 label="Email"
                 type="email"
@@ -556,6 +584,7 @@ function Studentlist() {
                 sx={{ marginTop: 2 }}
               />
               <TextField
+                required
                 name="age"
                 label="Age"
                 type="number"
@@ -574,6 +603,23 @@ function Studentlist() {
                   },
                 }}
               />
+              <FormControl fullWidth sx={{ mt: 2 }}>
+                <InputLabel>Class</InputLabel>
+                <Select
+                  required
+                  value={formData.class_id}
+                  label="class"
+                  onChange={(e) =>
+                    setFormData({ ...formData, class_id: e.target.value })
+                  }
+                >
+                  {classData.map((v: ClassData, k) => (
+                    <MenuItem key={k} value={v.id}>
+                      {v.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseAddModal}>Cancel</Button>
@@ -591,7 +637,7 @@ function Studentlist() {
         <Dialog
           open={openEditmodal}
           onClose={handleCloseEditModal}
-          PaperProps={{ style: { width: "500px", height: "450px" } }}
+          PaperProps={{ style: { width: "500px", height: "520px" } }}
         >
           <DialogTitle
             sx={{
@@ -649,6 +695,22 @@ function Studentlist() {
                   },
                 }}
               />
+              <FormControl fullWidth sx={{ mt: 2 }}>
+                <InputLabel>Class</InputLabel>
+                <Select
+                  value={formData.class_id}
+                  label="class"
+                  onChange={(e) =>
+                    setFormData({ ...formData, class_id: e.target.value })
+                  }
+                >
+                  {classData.map((v: ClassData, k) => (
+                    <MenuItem key={k} value={v.id}>
+                      {v.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseEditModal}>Cancel</Button>
@@ -665,7 +727,7 @@ function Studentlist() {
         <Dialog
           open={openViewmodal}
           onClose={handleCloseViewModal}
-          PaperProps={{ style: { width: "500px", height: "425px" } }}
+          PaperProps={{ style: { width: "500px", height: "500px" } }}
         >
           <DialogTitle
             sx={{
@@ -717,6 +779,18 @@ function Studentlist() {
               label="Age"
               type="number"
               value={formData.age}
+              onChange={handleChange}
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ marginTop: 2 }}
+            />
+            <TextField
+              name="class"
+              label="Class"
+              type="text"
+              value={formData.class}
               onChange={handleChange}
               fullWidth
               InputProps={{
