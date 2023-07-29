@@ -32,10 +32,10 @@ function Login() {
   const navigate = useNavigate();
   // const userContext = useContext(UserContext);
 
-  const loginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     // userContext.setUser(true);
     e.preventDefault();
-    await instance
+    instance
       .post("auth/login", loginForm)
       .then((response) => {
         const expires_time = response.data.data.expire_in;

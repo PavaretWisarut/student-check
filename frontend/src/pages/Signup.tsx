@@ -11,7 +11,7 @@ import { amber } from "@mui/material/colors";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import instance from "../api/axiosinstance";
 import Swal from "sweetalert2";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -44,18 +44,17 @@ function Signup() {
   const registerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await instance.post("auth/register", formData).then((response) => {
-        console.log(response.data);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Register Successfully Redirect To login Page",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        resetForm()
-      })
-      navigate("/")
+      const response = await instance.post("auth/register", formData);
+      console.log(response.data);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Register Successfully Redirect To login Page",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      resetForm();
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

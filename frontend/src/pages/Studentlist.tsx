@@ -32,7 +32,6 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 
 function Studentlist() {
-
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
   const gridWidth = isMobileOrTablet ? "100%" : "62%";
@@ -136,19 +135,23 @@ function Studentlist() {
         });
         handleCloseAddModal();
       } else {
-        await instance.post("student/addstudent", formData).then((response) => {
-          console.log(response.data);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Add Student Successfully",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          // alert("Add Student Successfully !");
-          handleCloseAddModal();
-          getUsers();
+        const data = {
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          email: formData.email,
+          age: formData.age,
+          class_id: formData.class_id,
+        };
+        await instance.post("student/addstudent", data);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Add Student Successfully",
+          showConfirmButton: false,
+          timer: 2000,
         });
+        handleCloseAddModal();
+        getUsers();
       }
     } catch (error) {
       console.error(error);
@@ -166,17 +169,15 @@ function Studentlist() {
         age: formData.age,
         class_id: formData.class_id,
       };
-      await instance.put("student/updatestudent", data).then((response) => {
-        console.log(response.data);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Edit Student Successfully",
-          timer: 2000,
-        });
-        handleCloseEditModal();
-        getUsers();
+      await instance.put("student/updatestudent", data);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Edit Student Successfully",
+        timer: 2000,
       });
+      handleCloseEditModal();
+      getUsers();
     } catch (error) {
       console.log(error);
     }
@@ -195,10 +196,9 @@ function Studentlist() {
         confirmButtonText: "Yes",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await instance.delete(`student/deletestudent/${id}`).then(() => {
-            Swal.fire("Deleted!", "Deleted Student Successfully", "success");
-            getUsers();
-          });
+          await instance.delete(`student/deletestudent/${id}`);
+          Swal.fire("Deleted!", "Deleted Student Successfully", "success");
+          getUsers();
         }
       });
     } catch (error) {
