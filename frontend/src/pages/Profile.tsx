@@ -4,7 +4,9 @@ import { Box, Button, TextField, Typography, Avatar } from "@mui/material";
 import avatarthumbnail from "../assets/pictures/AvatarThumnail.jpg";
 import instance from "../api/axiosinstance";
 import { useTheme } from "@mui/material/styles";
-// import { ProfileInterface } from "../ts/Profile-interface"
+import { tokenInterface } from "../ts/Profile-interface";
+import Cookies from "universal-cookie";
+import { decodeToken } from "react-jwt";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Profile() {
@@ -13,27 +15,39 @@ function Profile() {
   // const Responsive = isMobileOrTablet ? "100%" : "65%";
   const [profile, setProfile] = useState({
     id: "",
-    firstname: "",
+    fistname: "",
     lastname: "",
     email: "",
     age: 0,
   });
+  const [tokenid, setTokenid] = useState("");
+
+  const cookies = new Cookies();
+  const access_token = cookies.get("accesstoken");
 
   useEffect(() => {
-    getMyprofile();
-  }, []);
+    const myDecodedToken: tokenInterface | null = decodeToken(access_token);
 
-  // waiting for api get member by
-  const getMyprofile = async () => {
-    try {
-      const getstudent = await instance.get(
-        `/student/getstudents/a6fd31c8-b593-484f-9989-332a461dfb7b`
-      );
-      setProfile(getstudent.data.data[0]);
-    } catch (error) {
-      console.error(error);
+    if (myDecodedToken !== null) {
+      setTokenid(myDecodedToken.id);
+    } else {
+      console.log("Token is null");
     }
-  };
+  }, [access_token]);
+
+  useEffect(() => {
+    const getMyprofile = async () => {
+      try {
+        const getstudent = await instance.get(`/member/getmember/${tokenid}`);
+        setProfile(getstudent.data.data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (tokenid !== "") {
+      getMyprofile();
+    }
+  }, [tokenid]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({
@@ -90,8 +104,8 @@ function Profile() {
               </Typography>
               <TextField
                 variant="outlined"
-                name="firstname"
-                value={profile.firstname}
+                name="fistname"
+                value={profile.fistname}
                 onChange={handleChange}
                 size="small"
                 sx={{
@@ -229,10 +243,10 @@ function Profile() {
               Firstname
             </Typography>
             <TextField
-              name="firstname"
+              name="fistname"
               variant="outlined"
               onChange={handleChange}
-              value={profile.firstname}
+              value={profile.fistname}
               size="small"
               sx={{
                 width: "auto",
