@@ -65,14 +65,15 @@ function Studentlist() {
   useEffect(() => {
     if (access_token) {
       getUsers();
+      getClass();
     } else {
       navigate("/");
     }
   }, [navigate, access_token]);
 
-  useEffect(() => {
-    getClass();
-  }, []);
+  // useEffect(() => {
+  //   getClass();
+  // }, []);
 
   /// check access token if not exist return to path /
   if (!access_token) {
